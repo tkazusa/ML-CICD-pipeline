@@ -15,5 +15,6 @@ phases:
 
   build:
     commands:
-      - . ./ecr-regist-batch.sh
-      - . ./ecr-regist-train.sh
+      # - . ./ecr-regist-batch.sh
+      # - . ./ecr-regist-train.sh
+      - pipeline.py
