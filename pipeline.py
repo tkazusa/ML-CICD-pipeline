@@ -1,5 +1,7 @@
 import uuid
 import logging
+import argparse
+
 import stepfunctions
 import boto3
 import sagemaker
@@ -20,7 +22,18 @@ TRAINING_JOB_NAME='sf-train-{}'.format(id) # JobNameの重複NG
 BATCH_ROLE='arn:aws:iam::815969174475:role/service-role/AWSBatchServiceRole'
 SAGEMAKER_ROLE = 'arn:aws:iam::815969174475:role/service-role/AmazonSageMaker-ExecutionRole-20190909T195854'
 WORKFLOW_ROLE='arn:aws:iam::815969174475:role/StepFunctionsWorkflowExecutionRole'
-TRAIN_URI='815969174475.dkr.ecr.us-east-1.amazonaws.com/sm-tf-nightly-gpu:latest'
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--batch_job_definition', type=str, default=os.environ['BATCH_JOB_DEFINITION'])
+parser.add_argument('--batch_job_name', type=str, default=os.environ['BATCH_JOB_NAME'])
+parser.add_argument('--batch_job_queue', type=str, default=os.environ['BATCH_JOB_QUEUE'])
+parser.add_argument('--train_url', type=str, default=os.environ['TRAIN_URL'])
+parser.add_argument('--data_path', type=str, default=os.environ['DATA_PATH'])
+parser.add_argument('--batch_size', type=str, default=os.environ['BATCH_SIZE'])
+parser.add_argument('--epoch', type=str, default=os.environ['EPOCH'])
+args = parser.parse_args()
+
 
 
 # SFn の実行に必要な情報を渡す際のスキーマを定義します
@@ -38,9 +51,9 @@ execution_input = ExecutionInput(schema={
 # SFn のワークフローの定義を記載します
 inputs={
     # AWS Batch
-    'BatchJobDefinition': 'job_run:1',
-    'BatchJobName': 'test',
-    'BatchJobQueue': 'test',
+    'BatchJobDefinition': args.batch_job_definition,
+    'BatchJobName': args.batch_job_name,
+    'BatchJobQueue': args.batch_job_queue,
 
     # SageMaker Training
     'TrainJobName': TRAINING_JOB_NAME
@@ -59,11 +72,11 @@ etl_step = steps.BatchSubmitJobStep(
 )
 
 ## SageMaker の学習ジョブを実行するステップ
-hyperparameters = {'batch_size': 64,'epochs': 1}
+hyperparameters = {'batch_size': args.batch_size,'epochs': args.epoch}
 output_path = 's3://{}/output'.format(BUCKET)
-data_path = {'train': 's3://{}/data'.format(BUCKET)}
+data_path = {'train': args.data_path}
 
-estimator = Estimator(image_name=TRAIN_URI,
+estimator = Estimator(image_name=args.train_url,
                       role=SAGEMAKER_ROLE,
                       hyperparameters=hyperparameters,
                       train_instance_count=1,
