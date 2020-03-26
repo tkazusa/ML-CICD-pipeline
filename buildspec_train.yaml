@@ -15,4 +15,5 @@ phases:
 
   build:
     commands:
-      - . ./test.sh
+      - . ./ecr-regist-batch.sh
+      - . ./ecr-regist-train.sh

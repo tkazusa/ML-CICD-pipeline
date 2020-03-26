@@ -1,4 +1,5 @@
-ACCOUNT_ID=`aws sts get-caller-identity --query 'Account' --output text`
+# ACCOUNT_ID=`aws sts get-caller-identity --query 'Account' --output text`
+ACCOUNT_ID='815969174475' 
 REGION='us-east-1'
 TAG=':latest'
 ECR_REPOGITORY='sm-tf-nightly-gpu'
