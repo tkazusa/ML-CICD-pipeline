@@ -15,8 +15,8 @@ id = uuid.uuid4().hex
 
 REGION='us-east-1'
 BUCKET='sfn-sagemaker-workflow'
-FLOW_NAME='flow_{}'.format(id)
-TRAINING_JOB_NAME='sf-train-{}'.format(id)
+FLOW_NAME='flow_{}'.format(id) 
+TRAINING_JOB_NAME='sf-train-{}'.format(id) # JobNameの重複NG
 BATCH_ROLE='arn:aws:iam::815969174475:role/service-role/AWSBatchServiceRole'
 SAGEMAKER_ROLE = 'arn:aws:iam::815969174475:role/service-role/AmazonSageMaker-ExecutionRole-20190909T195854'
 WORKFLOW_ROLE='arn:aws:iam::815969174475:role/StepFunctionsWorkflowExecutionRole'
