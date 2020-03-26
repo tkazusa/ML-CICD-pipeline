@@ -19,7 +19,7 @@ id = uuid.uuid4().hex
 REGION='us-east-1'
 BUCKET='sfn-sagemaker-workflow'
 FLOW_NAME='flow_{}'.format(id) 
-TRAINING_JOB_NAME='sf-train-{}'.format(id) # JobNameの重複NG
+TRAINING_JOB_NAME='sf-train-{}'.format(id) # JobNameの重複NGなのでidを追加している
 BATCH_ROLE='arn:aws:iam::815969174475:role/service-role/AWSBatchServiceRole'
 SAGEMAKER_ROLE = 'arn:aws:iam::815969174475:role/service-role/AmazonSageMaker-ExecutionRole-20190909T195854'
 WORKFLOW_ROLE='arn:aws:iam::815969174475:role/StepFunctionsWorkflowExecutionRole'
@@ -27,8 +27,6 @@ WORKFLOW_ROLE='arn:aws:iam::815969174475:role/StepFunctionsWorkflowExecutionRole
 def create_estimator():
     hyperparameters = {'batch_size': args.batch_size,'epochs': args.epoch}
     output_path = 's3://{}/output'.format(BUCKET)
-    data_path = {'train': args.data_path}
-
     estimator = Estimator(image_name=args.train_url,
                         role=SAGEMAKER_ROLE,
                         hyperparameters=hyperparameters,
@@ -89,6 +87,7 @@ if __name__ == '__main__':
 
     ## SageMaker の学習ジョブを実行するステップ
     estimator = create_estimator()
+    data_path = {'train': args.data_path}
 
     training_step = steps.TrainingStep(
         'Train Step', 
