@@ -42,6 +42,7 @@ inputs={
     'BatchJobName': 'test',
     'BatchJobQueue': 'test',
 
+    # SageMaker Training
     'TrainJobName': TRAINING_JOB_NAME
     }
 

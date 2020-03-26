@@ -16,6 +16,8 @@ phases:
 
   build:
     commands:
+      # Docker イメージを build して ECR へ登録
       # - . ./ecr-regist-batch.sh
       # - . ./ecr-regist-train.sh
+      - . ./setenv.sh
       - python $SRC
