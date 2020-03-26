@@ -1,0 +1,16 @@
+version: 0.2
+
+env:
+  variables:
+    # SOURCE_VERSION: $(echo $CODEBUILD_RESOLVED_SOURCE_VERSION)
+    REPO_NAME: "https://github.com/tkazusa/ML-CICD-pipeline"
+
+phases:
+  install:
+    runtime-versions:
+      docker: 18
+      python: 3.8
+
+  build:
+    commands:
+      - echo 'hello'
