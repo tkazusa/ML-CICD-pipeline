@@ -94,7 +94,7 @@ if __name__ == '__main__':
         estimator=estimator,
         data=data_path,
         job_name=execution_input['TrainJobName'],  
-        wait_for_completion=False
+        wait_for_completion=False  # SFnを実行した後に Bitbucket へプルリクを上げるように変更したため、ここは True で良いかも。
     )
 
     # 各 Step を連結
