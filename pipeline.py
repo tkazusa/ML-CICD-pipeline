@@ -66,21 +66,17 @@ default=os.environ['PREPROCESSED_OUTPUT_PATH'])
         ProcessingInput(
             source=args.data_path,
             destination="/opt/ml/processing/input",
-            input_name="input-1"
+            input_name="input-data"
         )
     ]
 
     processing_outputs = [
+        # 処理後のデータをdestinationで指定した S3 パスへ退避、複数指定可能。
         ProcessingOutput(
-            source="/opt/ml/processing/train",
-            destination="{}/{}".format(args.preprocessed_output_path,"train"),
+            source="/opt/ml/processing/output/",
+            destination=args.preprocessed_output_path,
             output_name="train_data",
-        ),
-        ProcessingOutput(
-            source="/opt/ml/processing/test",
-            destination="{}/{}".format(args.preprocessed_output_path, "test"),
-            output_name="test_data",
-        ),
+        )
     ]
 
     processing_step = ProcessingStep(
