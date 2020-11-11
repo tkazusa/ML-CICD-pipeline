@@ -1,11 +1,9 @@
-batch:
-  BatchJobDefinition: 'job_run:1'
-  BatchJobName: 'test'
-  BatchJobQueue: 'test'
+preprocess:
+    data_path: 's3://sfn-sagemaker-workflow/train'
+    preprocessed_output_path: 's3://sfn-sagemaker-workflow'
 
 train:
-  train_url: '815969174475.dkr.ecr.us-east-1.amazonaws.com/sm-tf-nightly-gpu:latest'
-  data_path: "s3://sfn-sagemaker-workflow/train"
+  image_url: '815969174475.dkr.ecr.us-east-1.amazonaws.com/tf-sm-process-train-gpu:latest'
   hyper_parameter: 
     batch_size: 64
     epoch: 1

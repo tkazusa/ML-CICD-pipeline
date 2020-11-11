@@ -14,6 +14,9 @@ RUN pip install sagemaker-containers
 #  └ model/
 COPY tf_codes /opt/ml/code/
 
+# ★今回追加した行
+COPY preprocess /opt/ml/preprocess/ 
+
 # SageMaker SDK で学習のために使うスクリプト(エントリーポイントと呼ばれている)を指定。
 # SAGEMAKER_PROGRAM はデフォルトでは /opt/ml/code/ 以下を指す。
 # 絶対パスを指定しても良い。
