@@ -31,7 +31,7 @@ WORKFLOW_ROLE='arn:aws:iam::815969174475:role/StepFunctionsWorkflowExecutionRole
 def create_estimator():
     hyperparameters = {'batch_size': args.batch_size,'epochs': args.epoch}
     output_path = 's3://{}/output'.format(BUCKET)
-    estimator = Estimator(image_name=args.train_url,
+    estimator = Estimator(image_name=args.image_url,
                         role=SAGEMAKER_ROLE,
                         hyperparameters=hyperparameters,
                         train_instance_count=1,
@@ -67,7 +67,7 @@ default=os.environ['PREPROCESSED_OUTPUT_PATH'])
             source=args.data_path,
             destination="/opt/ml/processing/input",
             input_name="input-data"
-        )
+        ),
     ]
 
     processing_outputs = [
@@ -78,6 +78,15 @@ default=os.environ['PREPROCESSED_OUTPUT_PATH'])
             output_name="train_data",
         )
     ]
+    
+
+    pre_processor = Processor(
+        role=SAGEMAKER_ROLE, 
+        image_uri=processing_image_uri,
+        entrypoint=["python3", "/opt/ml/preprocess/preprocess.py",],
+        instance_count=1, 
+        instance_type="ml.p3.2xlarge")    
+    
 
     processing_step = ProcessingStep(
         "SageMaker pre-processing step",
